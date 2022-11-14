@@ -15,15 +15,15 @@ import("//build/ohos.gni")
 
 ohos_shared_library("elfio") {
   sources = [
+    "./c_wrapper/elfio_c_wrapper.cpp",
     "//third_party/elfio/elfio/elfio_demo.cpp",
-    "./c_wrapper/elfio_c_wrapper.cpp"
   ]
 
   include_dirs = [
     "//third_party/elfio",
     "./c_wrapper/",
     "./elfio/",
-    "./"
+    "./",
   ]
 
   license_file = "//third_party/elfio/COPYING"
