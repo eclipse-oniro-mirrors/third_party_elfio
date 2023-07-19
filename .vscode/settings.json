@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "copyright": "json",
         "*.ipp": "cpp",
         "strstream": "cpp",
         "cerrno": "cpp",
@@ -71,6 +72,33 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "compare": "cpp"
+    },
+    "svn.ignoreMissingSvnWarning": true,
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "googletest.failed",
+                "settings": {
+                    "foreground": "#f00"
+                }
+            },
+            {
+                "scope": "googletest.passed",
+                "settings": {
+                    "foreground": "#0f0"
+                }
+            },
+            {
+                "scope": "googletest.run",
+                "settings": {
+                    "foreground": "#0f0"
+                }
+            }
+        ]
+    },
+    "gtest-adapter.debugConfig": "Run ELFIO Tests",
+    "gtest-adapter.supportLocation": true,
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json"
 }

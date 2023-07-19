@@ -21,14 +21,14 @@ THE SOFTWARE.
 */
 
 /*
- * This example shows how to create ELF object file for Linux on x86
+ * This example shows how to create ELF executable file for Linux on x86-64
  *
  * Instructions:
  * 1. Compile and link this file with ELFIO library
  *    g++ writer.cpp -o writer
- * 2. Execute result file write_obj
+ * 2. Execute result file writer
  *    ./writer
- * 3. Add executable flag to the output file
+ * 3. Add executable flag for the output file
  *    chmod +x hello_x86_64
  * 4. Run the result file:
  *    ./hello_x86_64
@@ -83,8 +83,7 @@ int main( void )
     text_seg->set_align( PAGE_SIZE );
 
     // Add code section into program segment
-    text_seg->add_section_index( text_sec->get_index(),
-                                 text_sec->get_addr_align() );
+    text_seg->add_section( text_sec, text_sec->get_addr_align() );
 
     // Create data section
     section* data_sec = writer.sections.add( ".data" );
@@ -107,8 +106,7 @@ int main( void )
     data_seg->set_align( PAGE_SIZE );
 
     // Add code section into program segment
-    data_seg->add_section_index( data_sec->get_index(),
-                                 data_sec->get_addr_align() );
+    data_seg->add_section( data_sec, data_sec->get_addr_align() );
 
     // Add optional signature for the file producer
     section* note_sec = writer.sections.add( ".note" );
@@ -125,7 +123,7 @@ int main( void )
     // In this example, the code starts at the first address of the
     // 'text_seg' segment. Therefore, the start address is set
     // to be equal to the segment location
-    writer.set_entry( CODE_ADDR );
+    writer.set_entry( text_seg->get_virtual_address() );
 
     // Create ELF file
     writer.save( "hello_x86_64" );

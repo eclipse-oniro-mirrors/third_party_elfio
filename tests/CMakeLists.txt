@@ -1,5 +1,16 @@
-# Unit tests are written using the Boost unit test framework
-find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+include(FetchContent)
+
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/9a32aee22d771387c494be2d8519fbdf46a713b2.zip
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
 
 # Find all the binary files used for testing and copy them into the build
 # directory. This allows the test to be run from the build directory
@@ -10,7 +21,7 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/elf_examples)
 # Second, glob all files under elf_examples
 file(GLOB elf_examples
     LIST_DIRECTORIES
-        false
+    false
     CONFIGURE_DEPENDS
     elf_examples/*)
 
@@ -32,15 +43,37 @@ add_executable(
 target_link_libraries(
     ELFIOTest
     PRIVATE
-        elfio::elfio
-        Boost::unit_test_framework)
+    elfio::elfio
+    gtest_main)
 
 add_test(
     NAME
-        ELFIOTest
+    ELFIOTest
     COMMAND
-        ${CMAKE_CURRENT_BINARY_DIR}/ELFIOTest
+    ${CMAKE_CURRENT_BINARY_DIR}/ELFIOTest
     WORKING_DIRECTORY
-        ${CMAKE_CURRENT_BINARY_DIR})
+    ${CMAKE_CURRENT_BINARY_DIR})
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_executable(
+        elfio_fuzzer
+        elfio_fuzzer.cpp)
+
+    target_link_libraries(
+        elfio_fuzzer
+        PRIVATE
+        elfio::elfio)
+
+    target_compile_options(elfio_fuzzer
+        PRIVATE $<$<C_COMPILER_ID:Clang>:-g -O1 -fsanitize=fuzzer,address>
+    )
+
+    target_link_libraries(elfio_fuzzer
+        PRIVATE $<$<C_COMPILER_ID:Clang>:-fsanitize=fuzzer,address>
+    )
+endif()
 
 add_dependencies(check ELFIOTest)
+
+include(GoogleTest)
+gtest_discover_tests(ELFIOTest)

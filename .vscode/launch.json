@@ -8,13 +8,12 @@
             "name": "Run ELFIO Tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/tests/ELFIOTest",
+            "program": "${workspaceFolder}/build/tests/ELFIOTest",
             "args": [
-                "-r",
-                "short"
+                "--gtest_filter=ELFIOTest.load32",
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/tests",
+            "cwd": "${workspaceFolder}/build/tests",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -32,8 +31,10 @@
             "name": "Run ELF Dump",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/examples/elfdump/elfdump",
-            "args": ["tests/elf_examples/crash.elf"],
+            "program": "${workspaceFolder}/build/examples/elfdump/elfdump",
+            "args": [
+                "build/tests/crash-de896e9e31bf6f4c540e7462ccc0440018e4f0de"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -48,6 +49,61 @@
             ],
             "preLaunchTask": "ELF Dump Build",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Run proc_mem",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/examples/proc_mem/proc_mem",
+            "args": [
+                "11706",
+                "/usr/bin/bash"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/home/user/ELFIO/examples/sudo_gdb.sh"
+        },
+        {
+            "name": "Run dump for /proc/kcore",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/examples/elfdump/elfdump",
+            "args": [
+                "/proc/kcore"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/home/user/ELFIO/examples/sudo_gdb.sh"
+        },
+        {
+            "name": "Fuzzer",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/tests/elfio_fuzzer",
+            "args": [
+                "crash-7143f5e49745dc6ce8909e642f9351d9d6496020"
+            ],
+            "cwd": "${workspaceFolder}/build/tests",
         }
     ]
 }
