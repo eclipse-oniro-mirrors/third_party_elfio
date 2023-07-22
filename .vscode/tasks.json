@@ -9,7 +9,7 @@
                 "CXXFLAGS='-g -O0'"
             ],
             "options": {
-                "cwd": "${workspaceRoot}/tests"
+                "cwd": "${workspaceRoot}/build/tests"
             },
             "group": {
                 "kind": "build",
@@ -28,12 +28,77 @@
                 "CXXFLAGS='-g -O0'"
             ],
             "options": {
-                "cwd": "${workspaceRoot}"
+                "cwd": "${workspaceRoot}/build"
             },
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "type": "shell",
+            "label": "clang-tidy",
+            "command": "clang-tidy",
+            "args": [
+                "--checks=*,-modernize-use-trailing-return-type,-modernize-avoid-c-arrays,-llvm*,-fuchsia-*,-altera-*",
+                "-header-filter=./*",
+                "examples/elfdump/elfdump.cpp",
+                "--",
+                "-I.",
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "Fuzzer",
+            "command": "clang",
+            "args": [
+                "-g",
+                "-O0",
+                "-fsanitize=fuzzer,address",
+                "-I..",
+                "elfio_fuzzer.cpp",
+                "-o",
+                "elfio_fuzzer",
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}/tests"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "Fuzzer Tests",
+            "command": "./elfio_fuzzer",
+            "args": [
+                "-jobs=8",
+                "corpus"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}/tests"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ],
     "version": "2.0.0"
