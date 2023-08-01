@@ -356,7 +356,7 @@ bool elfio_note_get_note( pnote_t   pnote,
                           Elf_Word* type,
                           char*     name,
                           int       name_len,
-                          void**    desc,
+                          char**    desc,
                           Elf_Word* descSize )
 {
     std::string name_str;
@@ -369,7 +369,7 @@ bool elfio_note_get_note( pnote_t   pnote,
 void elfio_note_add_note( pnote_t     pnote,
                           Elf_Word    type,
                           const char* name,
-                          const void* desc,
+                          const char* desc,
                           Elf_Word    descSize )
 {
     pnote->add_note( type, name, desc, descSize );
@@ -473,7 +473,7 @@ void elfio_dynamic_add_entry( pdynamic_t pdynamic,
 parray_t elfio_array_section_accessor_new( pelfio_t   pelfio,
                                            psection_t psection )
 {
-    return new array_section_accessor( *pelfio, psection );
+    return new array_section_accessor<Elf32_Word>( *pelfio, psection );
 }
 
 void elfio_array_section_accessor_delete( parray_t parray ) { delete parray; }

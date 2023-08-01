@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 #ifndef ELFIO_C_WRAPPER_H
 #define ELFIO_C_WRAPPER_H
-#include "elf_types.hpp"
+#include "elf_types_c_wrapper.hpp"
 #define ELFIO_C_HEADER_ACCESS_GET( TYPE, FNAME ) \
     TYPE elfio_get_##FNAME( pelfio_t pelfio );
 
@@ -85,7 +85,7 @@ typedef ELFIO::string_section_accessor*     pstring_t;
 typedef ELFIO::note_section_accessor*       pnote_t;
 typedef ELFIO::modinfo_section_accessor*    pmodinfo_t;
 typedef ELFIO::dynamic_section_accessor*    pdynamic_t;
-typedef ELFIO::array_section_accessor*      parray_t;
+typedef ELFIO::array_section_accessor<Elf32_Word>*      parray_t;
 
 extern "C"
 {
