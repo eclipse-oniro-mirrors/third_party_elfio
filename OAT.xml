@@ -47,15 +47,6 @@
 
 <configuration>
     <oatconfig>
-        <licensefile>
-            COPYING
-        </licensefile>
-        <licensematcherlist>
-            <licensematcher name="ELFIO" desc="">
-                <licensetext name='ELFIO is a header-only C++ library - installation does not require any
-(pre)compilation step.' desc=""/>
-            </licensematcher>
-        </licensematcherlist>
         <filefilterlist>
             <filefilter name="binaryFileTypePolicyFilter" desc="Files not to check">
                 <filteritem type="filepath" name="tests/elf_examples/.*" desc="Ignore this file, we do not use it."/>
