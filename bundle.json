@@ -9,7 +9,7 @@
     },
     "dirs": {},
     "scripts": {},
-    "licensePath": "COPYING",
+    "licensePath": "LICENSE.txt",
     "component": {
         "name": "elfio",
         "subsystem": "thirdparty",
