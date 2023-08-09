@@ -26,7 +26,7 @@ ohos_shared_library("elfio") {
     "./",
   ]
 
-  license_file = "//third_party/elfio/COPYING"
+  license_file = "//third_party/elfio/LICENSE.txt"
 
   subsystem_name = "thirdparty"
   part_name = "elfio"
