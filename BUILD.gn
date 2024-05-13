@@ -15,7 +15,6 @@ import("//build/ohos.gni")
 
 config("elfio_public_config") {
   include_dirs = [
-    "//third_party/elfio",
     "//third_party/elfio/elfio",
   ]
 }
@@ -30,7 +29,6 @@ ohos_shared_library("elfio") {
     "//third_party/elfio",
     "./c_wrapper/",
     "./elfio/",
-    "./",
   ]
 
   public_configs = [ ":elfio_public_config" ]
