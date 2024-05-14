@@ -27,6 +27,7 @@ ohos_shared_library("elfio") {
     "//third_party/elfio",
     "./c_wrapper/",
     "./elfio/",
+    "./",
   ]
 
   public_configs = [ ":elfio_public_config" ]
