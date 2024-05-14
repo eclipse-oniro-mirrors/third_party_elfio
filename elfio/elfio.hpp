@@ -33,13 +33,13 @@ THE SOFTWARE.
 #include <deque>
 #include <memory>
 
-#include <elf_types.hpp>
-#include <elfio_version.hpp>
-#include <elfio_utils.hpp>
-#include <elfio_header.hpp>
-#include <elfio_section.hpp>
-#include <elfio_segment.hpp>
-#include <elfio_strings.hpp>
+#include "elf_types.hpp"
+#include "elfio_version.hpp"
+#include "elfio_utils.hpp"
+#include "elfio_header.hpp"
+#include "elfio_section.hpp"
+#include "elfio_segment.hpp"
+#include "elfio_strings.hpp"
 
 #define ELFIO_HEADER_ACCESS_GET( TYPE, FNAME )         \
     TYPE get_##FNAME() const noexcept                  \
@@ -1105,12 +1105,12 @@ class elfio
 
 } // namespace ELFIO
 
-#include <elfio_symbols.hpp>
-#include <elfio_note.hpp>
-#include <elfio_relocation.hpp>
-#include <elfio_dynamic.hpp>
-#include <elfio_array.hpp>
-#include <elfio_modinfo.hpp>
-#include <elfio_versym.hpp>
+#include "elfio_symbols.hpp"
+#include "elfio_note.hpp"
+#include "elfio_relocation.hpp"
+#include "elfio_dynamic.hpp"
+#include "elfio_array.hpp"
+#include "elfio_modinfo.hpp"
+#include "elfio_versym.hpp"
 
 #endif // ELFIO_HPP
