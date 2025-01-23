@@ -1,7 +1,7 @@
 {
     "name": "@ohos/elfio",
     "description": "ELFIO is a small, header-only C++ library that provides a simple interface for reading and generating files in ELF binary format.",
-    "version": "Release_3.9",
+    "version": "3.9",
     "license": "MIT",
     "publishAs": "code-segment",
     "segment": {
