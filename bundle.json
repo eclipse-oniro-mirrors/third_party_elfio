@@ -25,7 +25,9 @@
             "third_party": []
         },
         "build": {
-            "sub_component": [],
+            "sub_component": [
+                "//third_party/elfio:elfio(//build/toolchain/linux:clang_x64)"
+            ],
             "inner_kits": [
                 {
                     "name": "//third_party/elfio:elfio",
