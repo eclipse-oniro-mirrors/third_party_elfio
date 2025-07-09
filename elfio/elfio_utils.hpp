@@ -26,37 +26,30 @@ THE SOFTWARE.
 #include <cstdint>
 #include <ostream>
 
-#define ELFIO_GET_ACCESS_DECL( TYPE, NAME ) \
-    virtual TYPE get_##NAME() const noexcept = 0
+#define ELFIO_GET_ACCESS_DECL( TYPE, NAME ) virtual TYPE get_##NAME() const = 0
 
 #define ELFIO_SET_ACCESS_DECL( TYPE, NAME ) \
-    virtual void set_##NAME( const TYPE& value ) noexcept = 0
+    virtual void set_##NAME( const TYPE& value ) = 0
 
-#define ELFIO_GET_SET_ACCESS_DECL( TYPE, NAME )                \
-    virtual TYPE get_##NAME() const noexcept              = 0; \
-    virtual void set_##NAME( const TYPE& value ) noexcept = 0
+#define ELFIO_GET_SET_ACCESS_DECL( TYPE, NAME )       \
+    virtual TYPE get_##NAME() const              = 0; \
+    virtual void set_##NAME( const TYPE& value ) = 0
 
 #define ELFIO_GET_ACCESS( TYPE, NAME, FIELD ) \
-    TYPE get_##NAME() const noexcept override \
-    {                                         \
-        return ( *convertor )( FIELD );       \
-    }
+    TYPE get_##NAME() const override { return ( *convertor )( FIELD ); }
 
-#define ELFIO_SET_ACCESS( TYPE, NAME, FIELD )              \
-    void set_##NAME( const TYPE& value ) noexcept override \
-    {                                                      \
-        FIELD = decltype( FIELD )( value );                \
-        FIELD = ( *convertor )( FIELD );                   \
+#define ELFIO_SET_ACCESS( TYPE, NAME, FIELD )     \
+    void set_##NAME( const TYPE& value ) override \
+    {                                             \
+        FIELD = decltype( FIELD )( value );       \
+        FIELD = ( *convertor )( FIELD );          \
     }
-#define ELFIO_GET_SET_ACCESS( TYPE, NAME, FIELD )          \
-    TYPE get_##NAME() const noexcept override              \
-    {                                                      \
-        return ( *convertor )( FIELD );                    \
-    }                                                      \
-    void set_##NAME( const TYPE& value ) noexcept override \
-    {                                                      \
-        FIELD = decltype( FIELD )( value );                \
-        FIELD = ( *convertor )( FIELD );                   \
+#define ELFIO_GET_SET_ACCESS( TYPE, NAME, FIELD )                        \
+    TYPE get_##NAME() const override { return ( *convertor )( FIELD ); } \
+    void set_##NAME( const TYPE& value ) override                        \
+    {                                                                    \
+        FIELD = decltype( FIELD )( value );                              \
+        FIELD = ( *convertor )( FIELD );                                 \
     }
 
 namespace ELFIO {
@@ -184,11 +177,11 @@ class address_translator
     {
         addr_translations = addr_trans;
 
-        std::sort(
-            addr_translations.begin(), addr_translations.end(),
-            []( address_translation& a, address_translation& b ) -> bool {
-                return a.start < b.start;
-            } );
+        std::sort( addr_translations.begin(), addr_translations.end(),
+                   []( const address_translation& a,
+                       const address_translation& b ) -> bool {
+                       return a.start < b.start;
+                   } );
     }
 
     //------------------------------------------------------------------------------
@@ -243,8 +236,7 @@ inline std::string to_hex_string( uint64_t value )
     std::string str;
 
     while ( value ) {
-        auto digit = value & 0xF;
-        if ( digit < 0xA ) {
+        if ( auto digit = value & 0xF; digit < 0xA ) {
             str = char( '0' + digit ) + str;
         }
         else {
