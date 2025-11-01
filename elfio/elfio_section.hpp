@@ -58,6 +58,7 @@ class section
     virtual void
     insert_data( Elf_Xword pos, const char* raw_data, Elf_Word size )    = 0;
     virtual void   insert_data( Elf_Xword pos, const std::string& data ) = 0;
+    virtual void   remove_data( Elf_Xword pos, Elf_Xword size )          = 0;
     virtual size_t get_stream_size() const                               = 0;
     virtual void   set_stream_size( size_t value )                       = 0;
 
@@ -210,6 +211,24 @@ template <class T> class section_impl : public section
     }
 
     size_t get_stream_size() const override { return stream_size; }
+
+    //------------------------------------------------------------------------------
+    void remove_data( Elf_Xword pos, Elf_Xword size ) override
+    {
+        if ( get_type() != SHT_NOBITS ) {
+            // Check for valid position
+            if ( pos > get_size() ) {
+                return;
+            }
+            Elf_Xword new_size = get_size() - size;
+            char* d = data.get();
+            std::copy( d + pos + size, d + get_size(), d + pos );
+            set_size( new_size );
+            if ( translator->empty() ) {
+                set_stream_size( get_stream_size() - (size_t)size );
+            }
+        }
+    }
 
     //------------------------------------------------------------------------------
     void set_stream_size( size_t value ) override { stream_size = value; }

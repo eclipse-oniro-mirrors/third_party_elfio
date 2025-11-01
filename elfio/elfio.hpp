@@ -551,7 +551,10 @@ class elfio
                entry_size < sizeof( Elf32_Phdr ) ) ) {
             return false;
         }
-
+        std::vector<Elf64_Addr> offsets;
+        for (const auto &psec : sections) {
+            offsets.emplace_back(psec->get_offset());
+        }
         for ( Elf_Half i = 0; i < num; ++i ) {
             if ( file_class == ELFCLASS64 ) {
                 segments_.emplace_back(
@@ -600,6 +603,7 @@ class elfio
                     seg->add_section_index( psec->get_index(), 0 );
                 }
             }
+            seg->sort_sections(offsets);
         }
 
         return true;
@@ -985,6 +989,31 @@ class elfio
             new_section->set_name_string_offset( pos );
 
             return new_section;
+        }
+
+        //------------------------------------------------------------------------------
+        //! \brief Delete the last section
+        //! \param name The name of the section
+        //! \return True if successful or the sections is empty, false otherwise
+        bool del_last( const std::string& name )
+        {
+            if (parent->sections_.empty()) {
+                return true;
+            }
+            auto& last_section = parent->sections_.back();
+            if (last_section->get_name() != name) {
+                return false;
+            }
+            Elf_Half str_index = parent->get_section_name_str_index();
+            section* string_table( parent->sections_[str_index].get() );
+            Elf_Word pos = last_section->get_name_string_offset();
+            // Deleteing intermediate section is not supported
+            if ( pos + name.length() + 1 != string_table->get_size() ) {
+                return false;
+            }
+            string_table->remove_data( pos, name.length() + 1 );
+            parent->sections_.pop_back();
+            return true;
         }
 
         //------------------------------------------------------------------------------
