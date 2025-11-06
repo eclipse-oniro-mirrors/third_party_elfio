@@ -55,6 +55,7 @@ class segment
     virtual Elf_Half get_sections_num() const                           = 0;
     virtual Elf_Half get_section_index_at( Elf_Half num ) const         = 0;
     virtual bool     is_offset_initialized() const                      = 0;
+    virtual void     sort_sections( std::vector<Elf64_Addr> &offs )     = 0;
 
   protected:
     ELFIO_SET_ACCESS_DECL( Elf64_Off, offset );
@@ -136,6 +137,14 @@ template <class T> class segment_impl : public segment
         }
 
         return Elf_Half( -1 );
+    }
+
+    //------------------------------------------------------------------------------
+    void sort_sections( std::vector<Elf64_Addr> &offs ) override
+    {
+        std::sort( sections.begin(), sections.end(), [&]( Elf_Half &a, Elf_Half &b ) {
+            return offs[a] < offs[b];
+        });
     }
 
     //------------------------------------------------------------------------------
