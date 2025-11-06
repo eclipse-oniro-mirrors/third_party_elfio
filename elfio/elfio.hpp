@@ -553,8 +553,8 @@ class elfio
         }
 
         std::vector<Elf64_Addr> offsets;
-        for (const auto &psec : sections) {
-            offsets.emplace_back(psec->get_offset());
+        for ( const auto &psec : sections ) {
+            offsets.emplace_back( psec->get_offset() );
         }
 
         for ( Elf_Half i = 0; i < num; ++i ) {
@@ -605,7 +605,7 @@ class elfio
                     seg->add_section_index( psec->get_index(), 0 );
                 }
             }
-            seg->sort_sections(offsets);
+            seg->sort_sections( offsets );
         }
 
         return true;
