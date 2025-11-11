@@ -1001,7 +1001,7 @@ class elfio
             section* string_table( parent->sections_[str_index].get() );
             Elf_Word pos = last_section->get_name_string_offset();
             // Deleteing intermediate section is not supported
-            if ( pos + name.length() + 1 != string_table->get_size() ) {
+            if ( name.length() + 1 != string_table->get_size() - pos ) {
                 return false;
             }
             string_table->remove_data( pos, name.length() + 1 );
