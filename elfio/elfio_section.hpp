@@ -217,7 +217,7 @@ template <class T> class section_impl : public section
     {
         if ( get_type() != SHT_NOBITS ) {
             // Check for valid position
-            if ( pos >= get_size() || size != get_size() - pos ) {
+            if ( pos >= get_size() || size > get_size() - pos ) {
                 return;
             }
             Elf_Xword new_size = get_size() - size;
