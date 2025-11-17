@@ -994,6 +994,28 @@ class elfio
         }
 
         //------------------------------------------------------------------------------
+        bool del_last( const std::string& name )
+        {
+            if ( parent->sections_.empty() ) {
+                return true;
+            }
+            auto& last_section = parent->sections_.back();
+            if ( last_section->get_name() != name ) {
+                return false;
+            }
+            Elf_Half str_index = parent->get_section_name_str_index();
+            section* string_table( parent->sections_[str_index].get() );
+            Elf_Word pos = last_section->get_name_string_offset();
+            // Deleteing intermediate section is not supported
+            if ( name.length() + 1 != string_table->get_size() - pos ) {
+                return false;
+            }
+            string_table->remove_data( pos, name.length() + 1 );
+            parent->sections_.pop_back();
+            return true;
+        }
+
+        //------------------------------------------------------------------------------
         std::vector<std::unique_ptr<section>>::iterator begin()
         {
             return parent->sections_.begin();
